@@ -5,4 +5,8 @@
   </PropertyGroup>
 
 
+  <ItemGroup>
+    <Folder Include="Data\" />
+    <Folder Include="Data\Services\" />
+  </ItemGroup>
 </Project>
