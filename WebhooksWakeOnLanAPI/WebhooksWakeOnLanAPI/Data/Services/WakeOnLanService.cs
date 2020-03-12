@@ -8,10 +8,13 @@ namespace WebhooksWakeOnLanAPI.Data.Services
 {
     public class WakeOnLanService : IWakeOnLanService
     {
+        // Source: https://www.fluxbytes.com/csharp/wake-lan-wol-c/
         public void GenerateMagicPacket(Device device)
         {
-            string macAddress = device.MacAddress;                      // Our device MAC address
-            macAddress = Regex.Replace(macAddress, "[-|:]", "");       // Remove any semicolons or minus characters present in our MAC address
+            // Device MAC address
+            string macAddress = device.MacAddress;
+            // Remove any semicolons or minus characters present in MAC address
+            macAddress = Regex.Replace(macAddress, "[-|:]", "");
 
             Socket sock = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp)
             {
@@ -21,7 +24,8 @@ namespace WebhooksWakeOnLanAPI.Data.Services
             int payloadIndex = 0;
 
             /* The magic packet is a broadcast frame containing anywhere within its payload 6 bytes of all 255 (FF FF FF FF FF FF in hexadecimal), followed by sixteen repetitions of the target computer's 48-bit MAC address, for a total of 102 bytes. */
-            byte[] payload = new byte[1024];    // Our packet that we will be broadcasting
+            // Packet that will be broadcasted
+            byte[] payload = new byte[1024];
 
             // Add 6 bytes with value 255 (FF) in our payload
             for (int i = 0; i < 6; i++)
@@ -41,10 +45,9 @@ namespace WebhooksWakeOnLanAPI.Data.Services
                 }
             }
 
-            sock.SendTo(payload, new IPEndPoint(IPAddress.Parse("255.255.255.255"), 9));  // Broadcast our packet
+            // Broadcast the packet
+            sock.SendTo(payload, new IPEndPoint(IPAddress.Parse(device.SubnetMask), Convert.ToInt32(device.Port)));
             sock.Close(10000);
         }
     }
 }
-
-// {"MacAddress": "70-85-C2-72-C4-FA", "IpAddress": "192.168.1.17", "SubnetMask": "255.255.255.000", "Port": "4343"}
