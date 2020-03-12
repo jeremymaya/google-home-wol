@@ -17,12 +17,16 @@ namespace WebhooksWakeOnLanAPI.Controllers
         }
 
         [HttpPost("[action]")]
-        public IActionResult GenerateMagicPacket([FromBody]Device device)
+        public IActionResult Wake()
         {
-            if (device != null)
-            {
-                _wakeOnLanService.GenerateMagicPacket(device);
-            }
+            Device device = new Device();
+
+            device.MacAdress = "70-85-C2-72-C4-FA";
+            device.IpAddress = "192.168.1.17";
+            device.SubnetMask = "255.255.255.255";
+            device.Port = "9";
+
+            _wakeOnLanService.GenerateMagicPacket(device);
 
             return Ok();
         }
