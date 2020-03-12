@@ -3,6 +3,6 @@ namespace WebhooksWakeOnLanAPI.Data.Services
 {
     public interface IWakeOnLanService
     {
-        void GenerateMagicPacket();
+        void GenerateMagicPacket(Device device);
     }
 }
