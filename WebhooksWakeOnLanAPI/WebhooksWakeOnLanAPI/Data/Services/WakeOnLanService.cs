@@ -10,7 +10,7 @@ namespace WebhooksWakeOnLanAPI.Data.Services
     {
         public void GenerateMagicPacket(Device device)
         {
-            string macAddress = "70-85-C2-72-C4-FA";                      // Our device MAC address
+            string macAddress = device.MacAddress;                      // Our device MAC address
             macAddress = Regex.Replace(macAddress, "[-|:]", "");       // Remove any semicolons or minus characters present in our MAC address
 
             Socket sock = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp)
